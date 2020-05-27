@@ -1,0 +1,632 @@
+swagger: '2.0'
+info:
+  version: '1.0.1'
+  title: PoC1-api_docs
+  description: API of PoC1 Green Building
+  contact:
+    name: Your name
+host: 'localhost:3000'
+basePath: /api
+schemes:
+  - http 
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /createProfile:
+    post:
+      tags:
+      - "Building"
+      description: 'create building profile'
+      produces:
+        - application/json
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "building profile body"
+        required: true
+        schema:
+          $ref: "#/definitions/CreateProfileParams"
+      responses:
+        '200':
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/CreateProfileRes'
+  /getAllProfile/{userId}:
+    get:
+      tags:
+      - "Building"
+      description: 'Get all buildingProfile of userId'
+      produces:
+        - application/json
+      parameters:
+      - in: path
+        name: userId
+        type: string
+        required: true
+      responses:
+        '200':
+          description: 'Sample response: Details about a user by ID'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+  /getProfile/{buildingProfileId}:
+    get:
+      tags:
+      - "Building"
+      description: 'Get details of buildingProfileId'
+      produces:
+        - application/json
+      parameters:
+      - in: path
+        name: buildingProfileId
+        type: string
+        required: true
+      responses:
+        '200':
+          description: 'Sample response: Details about a buildingProfile by ID'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BuildingProfile'
+  /getEdge/{buildingId}:
+    get:
+      tags:
+      - "Building"
+      description: 'Get Edge of buildingId'
+      produces:
+        - application/json
+      parameters:
+      - in: path
+        name: buildingId
+        type: string
+        required: true
+      responses:
+        '200':
+          description: 'Sample response: Details about a building by ID'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EdgeofBuilding'
+  /getSystem/{deviceId}:
+    get:
+      tags:
+      - "Building"
+      description: 'Get System of edgeId'
+      produces:
+        - application/json
+      parameters:
+      - in: path
+        name: deviceId
+        type: string
+        required: true
+      responses:
+        '200':
+          description: 'Sample response: Details about a system by ID'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SystemofEdge'
+  /deleteProfile/{buildingProfileId}:
+    delete:
+      tags:
+      - "Building"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteProfile"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Delete Profile"
+        required: true
+        schema:
+          $ref: "#/definitions/DeleteProfile"
+      - in: path
+        name: buildingProfileId
+        type: string
+        required: true
+      responses:
+        '200':
+          description: "deleted successful"
+          schema:
+            $ref: '#/definitions/DeleteProfileResponse'
+  /deleteArea/{areaId}:
+    delete:
+      tags:
+      - "Building"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteArea"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Delete Area"
+        required: true
+        schema:
+          $ref: "#/definitions/DeleteArea"
+      - in: path
+        name: areaId
+        type: string
+        required: true
+      responses:
+        '200':
+          description: "deleted successful"
+          schema:
+            $ref: '#/definitions/DeleteAreaResponse'
+  /postEnergyBuilding:
+    post:
+      tags:
+      - "Energy"
+      summary: "Fetch energy from BuildingProfile"
+      description: "Fetch energy from BuildingProfile"
+      operationId: "FetchEnergyBuildingProfile"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch Energy"
+        required: true
+        schema:
+          $ref: "#/definitions/EnergyBuilding"
+      responses:
+        '200':
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/EnergyBuildingResponse'
+  /postEnergyArea:
+    post:
+      tags:
+      - "Energy"
+      summary: "Fetch energy from BuildingProfile"
+      description: "Fetch energy from BuildingProfile per Area"
+      operationId: "FetchEnergyBuildingProfileArea"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch Energy by Area"
+        required: true
+        schema:
+          $ref: "#/definitions/EnergyArea"
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/EnergyAreaResponse'        
+  /postCOPBuilding:
+    post:
+      tags:
+      - "COP"
+      summary: "Fetch COP from BuildingProfile"
+      description: "Fetch COP from BuildingProfile"
+      operationId: "FetchCOPBuildingProfile"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch COP"
+        required: true
+        schema:
+          $ref: "#/definitions/COPBuilding"
+      responses:
+        '200':
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/COPBuildingResponse"
+  /postCOPArea:
+    post:
+      tags:
+      - "COP"
+      summary: "Fetch COP from BuildingProfile"
+      description: "Fetch COP from BuildingProfile per Area"
+      operationId: "FetchCOPBuildingProfileArea"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch COP per Area"
+        required: true
+        schema:
+          $ref: "#/definitions/COPArea"
+      responses:
+        '200':
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/COPAreaResponse'
+definitions:
+  User:
+    type: object
+    required:
+      - name
+    properties:
+      buildingProfileId:
+        type: string
+        format: uuid
+      buildingProfileName:
+        type: string
+        example: 'RnD building'
+      buildingId:
+        type: string
+        format: uuid
+      buildingName:
+        type: string
+        example: 'DIT-TH'
+      groupId:
+        type: string
+        format: uuid
+      groupName:
+        type: string
+        example: 'IoT group'
+      updatedDate:
+        type: string
+        format: date-time
+  BuildingProfile:
+    type: object
+    required:
+      - name
+    properties:
+      buildingProfileId:
+        type: string
+        format: uuid
+      buildingProfileName:
+        type: string
+        example: 'RnD building'
+      description:
+        type: string
+        example: This profile is testing.
+      deviceId:
+        type: string
+        format: uuid
+      deviceName:
+        type: string
+        example: 'Edge1'
+      equipments:
+        type: array
+        items:
+          type: object
+          properties:
+            equipmentId:
+              type: string
+              format: uuid
+            equipmentName:
+              type: string
+            topEntity:
+              type: string
+            DemandAddress:
+              type: string
+            SystemAirnetAddress:
+              type: string
+            areaId:
+              type: string
+              format: uuid
+            areaName:
+              type: string
+        example:
+          - equipmentId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            equipmentName: VRV
+            topEntity: Outdoor
+            DemandAddress: 20
+            SystemAirnetAddress: 10
+            areaId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            areaName: Roof top
+            
+          - equipmentId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            equipmentName: VRV
+            topEntity: Outdoor
+            DemandAddress: 20
+            SystemAirnetAddress: 10
+            areaId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            areaName: Roof top
+  EdgeofBuilding:
+    type: object
+    required:
+      - name
+    properties:
+      deviceId:
+        type: string
+        format: uuid
+      deviceName:
+        type: string
+    example:
+      - deviceId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        deviceName: GPFEDGE000001
+        
+      - deviceId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        deviceName: GPFEDGE000002
+  SystemofEdge:
+    type: object
+    required:
+      - name
+    properties:
+      systemId:
+        type: string
+        format: uuid
+    example:
+      - systemId: 3fa85g75-5717-4562-b3fc-2c963f66fyh4
+
+      - systemId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+  EnergyBuilding:
+    type: object
+    required:
+      - name
+    properties:
+      buildingProfileId:
+        type: string
+        format: uuid
+      queryFlag:
+        type: string
+        example: yearly
+      yearRange:
+        type: object
+        properties:
+          from_year:
+            type: string
+            format: date-time
+  CreateProfileParams:
+    type: object
+    properties:
+      profileInformation:
+        type: object
+        properties:
+          profileName:
+            type: string
+            example: profile1
+          buildingId:
+            type: string
+            format: uuid
+          edgeId:
+            type: string
+            format: uuid
+          description:
+            type: string
+            example: this is profile for R&D building
+      profileArea:
+        type: array
+        items:
+          type: object
+          properties:
+            area_name:
+              type: string
+              example: 1st floor area
+            area_id:
+              type: string
+              format: uuid
+            description:
+              type: string
+              example: 1st floor of R&D building
+            systems:
+              type: array
+              items:
+                type: object
+                properties:
+                  systemName:
+                    type: string
+                    example: system1
+                  systemId:
+                    type: string
+                    format: uuid
+                  odUnits:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - VRV1
+                  idUnits:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - DUCT1
+                      - DUCT2
+                      - DUCT3
+      collaborators:
+        type: array
+        items:
+          type: string
+        example: 
+          - blablabla@gmail.com
+          - david_surya@gmail.com
+              
+              
+  CreateProfileRes:
+    type: object
+    properties:
+      status:
+        type: string
+        example: ok
+      message:
+        type: string
+        example: Create success
+
+  EnergyBuildingResponse:
+    type: object
+    properties:
+      month:
+        type: string
+      consumedEnergy:
+        type: number
+    example:
+      - month: Jan
+        consumedEnergy: 65
+      - month: Feb
+        consumedEnergy: 96
+      - month: Mar
+        consumedEnergy: 85
+      - month: Apr
+        consumedEnergy: 63
+      - month: May
+        consumedEnergy: 78
+      - month: Jun
+        consumedEnergy: 81
+      - month: Jul
+        consumedEnergy: 58
+      - month: Aug
+        consumedEnergy: 76
+      - month: Sep
+        consumedEnergy: 95
+      - month: Oct
+        consumedEnergy: 59
+      - month: Nov
+        consumedEnergy: 61
+      - month: Dec
+        consumedEnergy: 73
+  EnergyArea:
+    type: object
+    required:
+      - name
+    properties:
+      buildingProfileId:
+        type: string
+        format: uuid
+      queryFlag:
+        type: string
+        example: daily
+      dateRange:
+        type: object
+        properties:
+          from_date:
+            type: string
+            format: date-time
+          to_date:
+            type: string
+            format: date-time
+  EnergyAreaResponse:
+    type: object
+    properties:
+      areaId:
+        type: string
+        format: uuid
+      areaName:
+        type: string
+      consumedEnergy:
+        type: number
+    example:
+      - areaId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        areaName: 1st floor
+        consumedEnergy: 65
+      - areaId: 3fa85f22-5717-4562-bdrc-2c963f66afa6
+        areaName: 2st floor
+        consumedEnergy: 96
+
+  COPBuilding:
+    type: object
+    required:
+      - name
+    properties:
+      buildingProfileId:
+        type: string
+        format: uuid
+      queryFlag:
+        type: string
+        example: yearly
+      yearRange:
+        type: object
+        properties:
+          from_year:
+            type: string
+            format: date-time
+  COPBuildingResponse:
+    type: object
+    properties:
+      month:
+        type: string
+      currentCoolCapacity:
+        type: number
+    example:
+      - month: Jan
+        currentCoolCapacity: 12
+      - month: Feb
+        currentCoolCapacity: 15
+      - month: Mar
+        currentCoolCapacity: 20
+      - month: Apr
+        currentCoolCapacity: 25
+      - month: May
+        currentCoolCapacity: 18
+      - month: Jun
+        currentCoolCapacity: 16
+      - month: Jul
+        currentCoolCapacity: 19
+      - month: Aug
+        currentCoolCapacity: 21
+      - month: Sep
+        currentCoolCapacity: 20
+      - month: Oct
+        currentCoolCapacity: 22
+      - month: Nov
+        currentCoolCapacity: 21
+      - month: Dec
+        currentCoolCapacity: 20
+  COPArea:
+    type: object
+    required:
+      - name
+    properties:
+      buildingProfileId:
+        type: string
+        format: uuid
+      queryFlag:
+        type: string
+        example: daily
+      dateRange:
+        type: object
+        properties:
+          from_date:
+            type: string
+            format: date-time
+          to_date:
+            type: string
+            format: date-time
+  COPAreaResponse:
+    type: object
+    properties:
+      areaId:
+        type: string
+        format: uuid
+      areaName:
+        type: string
+      currentCoolCapacity:
+        type: number
+    example:
+      - areaId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        areaName: 1st floor
+        currentCoolCapacity: 20
+      - areaId: 3fa85f22-5717-4562-bdrc-2c963f66afa6
+        areaName: 2st floor
+        currentCoolCapacity: 18
+  DeleteProfile:
+    type: object
+    required:
+      - name
+    properties:
+      buildingProfileId:
+        type: string
+        format: uuid
+  DeleteProfileResponse:
+    type: object
+    properties:
+      delProfileRes:
+        type: string
+        example: 'deleted profile success'
+  DeleteArea:
+    type: object
+    required:
+      - name
+    properties:
+      areaId:
+        type: string
+        format: uuid
+  DeleteAreaResponse:
+    type: object
+    properties:
+      delAreaRes:
+        example: 'deleted area success'
+        type: string
