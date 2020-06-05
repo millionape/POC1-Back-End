@@ -37,8 +37,39 @@ functions:
           path: getAllProfile/{userId}
           method: get
       - http:
+          path: getBuildings
+          method: get
+      - http:
           path: createProfile
           method: post
+  usersApi:
+    handler: ./Users/app.router
+    environment:
+      BUILDING_PROFILE_TABLE: BuildingProfile
+    events:
+      - http:
+          path: getUsers
+          method: get
+  groupApi:
+    handler: ./Groups/app.router
+    environment:
+      GROUP_TABLE: UserGroup
+      USER_INFO_TABLE: UserInfo
+    events:
+      - http:
+          path: createGroup
+          method: post
+      - http:
+          path: addUserToGroup
+          method: post
+      - http:
+          path: removeUserFromGroup
+          method: post
+      - http:
+          path: getGroups
+          method: get
+        
+
   
       
 

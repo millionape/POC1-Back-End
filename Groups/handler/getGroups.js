@@ -3,18 +3,10 @@ const moment = require('moment');
 const dynamo = new AWS.DynamoDB.DocumentClient({
     // apiVersion: '2012-08-10'
 });
-exports.getAllProfile = function (path_params) {
-    console.log('creater id: ', path_params);
+exports.getAll = function (path_params) {
     return new Promise((resolve, reject) => {
         var params = {
-            TableName: process.env.BUILDING_PROFILE_TABLE,
-            FilterExpression: '#cid = :this_cid',
-            ExpressionAttributeNames: {
-                '#cid': 'createrId'
-            },
-            ExpressionAttributeValues: {
-                ':this_cid': path_params.userId
-            }
+            TableName: process.env.GROUP_TABLE,
         };
         console.log(params);
         dynamo.scan(params, onScan);

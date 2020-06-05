@@ -1,7 +1,5 @@
 'use strict';
-const createBuilding = require("./handler/createBuildingProfile");
-const getBuildingProfile = require("./handler/getBuildingProfile");
-const getBuildings = require("./handler/getBuildings");
+const users = require('./handler/users');
 module.exports.router = async (event, context, callback) => {
   const url_path = event.path.split('/')[1];
   const path_params = event.pathParameters;
@@ -16,17 +14,11 @@ module.exports.router = async (event, context, callback) => {
   console.log('path params :', path_params);
   console.log('body :', body);
 
-  if (event.httpMethod === 'POST') {
-    if (url_path === 'createProfile') {
-      response_msg.result = await createBuilding.create(body);
+  if (event.httpMethod === 'GET') {
+    if (url_path === 'getUsers') {
+      response_msg.result = await users.getUsers();
     }
-  } else if (event.httpMethod === 'GET') {
-    if (url_path === 'getAllProfile') {
-      response_msg.result = await getBuildingProfile.getAllProfile(path_params);
-    }else if(url_path === 'getBuildings'){
-      response_msg.result = await getBuildings.getBuildings(null);
-    }
-  } else {
+  }else {
     response_msg.status = "error";
     response_msg.message = "no handler for GET method";
   }

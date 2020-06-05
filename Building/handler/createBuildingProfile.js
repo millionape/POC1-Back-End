@@ -16,11 +16,12 @@ exports.create = function (body) {
                 buildingProfileName: body.profileInformation.profileName,
                 createdDate: moment().format(),
                 description: body.profileInformation.description,
-                deviceId: body.profileInformation.edgeId,
+                deviceIds: body.profileInformation.edgeIds,
                 deviceName: "null",
                 updatedDate: moment().format(),
                 collaborators: body.collaborators,
-                creater: body.creater
+                creater: body.creater,
+                createrId: body.createrId
             }
         };
         console.log(params);
